@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,11 +18,39 @@ import javax.swing.table.DefaultTableModel;
  * @author naman
  */
 public class PATIENT_TRANS {
-    CONNECTION connection = new CONNECTION();
 
-    public void fillPatientTable(JTable table) {
-        PreparedStatement ps;
-        ResultSet rs;
+    CONNECTION connection = new CONNECTION();
+    PreparedStatement ps;
+    ResultSet rs;
+
+    public boolean addTrans(String patientid, String des, String medspec, String sname, String trans, String key) {
+
+        String addQuery = "INSERT INTO `transcriptions`(`patient_id`, `description`, `medical_specialty`, `sample_name`, `transcription`, `keywords`) VALUES (?,?,?,?,?,?)";
+        try {
+
+            ps = connection.createConnection().prepareStatement(addQuery);
+
+            ps.setString(1, patientid);
+            ps.setString(2, des);
+            ps.setString(3, medspec);
+            ps.setString(4, sname);
+            ps.setString(5, trans);
+            ps.setString(6, key);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1062) {
+                return false;
+            } else {
+                Logger.getLogger(CONNECTION.class.getName()).log(Level.SEVERE, null, e);
+                return false;
+            }
+        }
+
+    }
+
+    public void fillTransTable(JTable table) {
         String selectQuery = "SELECT * FROM `transcriptions`";
 
         try {
@@ -49,4 +78,50 @@ public class PATIENT_TRANS {
         }
 
     }
+
+    public boolean editTrans(int transid, String patientid, String des, String medspec, String sname, String trans, String key) {
+        String editQuery = "UPDATE `transcriptions` SET `description`=?,`medical_specialty`=?,`sample_name`=?,`transcription`=?,`keywords`=? WHERE `trans_id`=?";
+
+        try {
+
+            ps = connection.createConnection().prepareStatement(editQuery);
+
+            ps.setString(1, des);
+            ps.setString(2, medspec);
+            ps.setString(3, sname);
+            ps.setString(4, trans);
+            ps.setString(5, key);
+            ps.setString(4, patientid);
+            ps.setInt(5, transid);
+
+            return (ps.executeUpdate() > 0);
+
+        } catch (SQLException e) {
+            Logger.getLogger(CONNECTION.class.getName()).log(Level.SEVERE, null, e);
+            return false;
+        }
+    }
+
+    public boolean removeTrans(int transid) {
+        int opt = JOptionPane.showConfirmDialog(null, "Do you want to remove this transcription?", "", JOptionPane.YES_NO_OPTION);
+        if (opt == 0) {
+            String deleteQuery = "DELETE FROM `transcriptions` WHERE `trans_id`=?";
+
+            try {
+
+                ps = connection.createConnection().prepareStatement(deleteQuery);
+
+                ps.setInt(1, transid);
+
+                return (ps.executeUpdate() > 0);
+
+            } catch (SQLException e) {
+                Logger.getLogger(CONNECTION.class.getName()).log(Level.SEVERE, null, e);
+                return false;
+            }
+
+        }
+        return false;
+    }
+
 }

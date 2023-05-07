@@ -15,18 +15,18 @@ import java.util.logging.Logger;
  * @author naman
  */
 public class CONNECTION {
-    
+
     public Connection createConnection() {
-		
-		Connection connection = null;
-		
-		MysqlDataSource mds = new MysqlDataSource();
-		mds.setServerName("localhost");
-		mds.setPortNumber(3306);
-		mds.setUser("root");
-		mds.setPassword("");;
-		mds.setDatabaseName("group13");
-		
+
+        Connection connection = null;
+
+        MysqlDataSource mds = new MysqlDataSource();
+        mds.setServerName("localhost");
+        mds.setPortNumber(3306);
+        mds.setUser("root");
+        mds.setPassword("");;
+        mds.setDatabaseName("group13");
+
         try {
             connection = mds.getConnection();
         } catch (SQLException ex) {
@@ -34,5 +34,5 @@ public class CONNECTION {
         }
         return connection;
     }
-    
+
 }

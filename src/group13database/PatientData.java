@@ -4,9 +4,16 @@
  */
 package group13database;
 
+import java.awt.Rectangle;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.table.DefaultTableModel;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -17,12 +24,18 @@ public class PatientData extends javax.swing.JFrame {
     /**
      * Creates new form PatientData
      */
+    CONNECTION connection = new CONNECTION();
     PATIENT_INFO patientInfo = new PATIENT_INFO();
     PATIENT_TRANS patientTrans = new PATIENT_TRANS();
+    PATIENT_PRES patientPres = new PATIENT_PRES();
+    PreparedStatement ps;
+    ResultSet rs;
+
     public PatientData() {
         initComponents();
         patientInfo.fillPatientTable(jTable1);
-        patientTrans.fillPatientTable(jTable2);
+        patientTrans.fillTransTable(jTable2);
+        patientPres.fillPresTable(jTable3);
     }
 
     /**
@@ -51,33 +64,98 @@ public class PatientData extends javax.swing.JFrame {
         jButtonEdit = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldID = new javax.swing.JTextField();
-        jButtonRefresh = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jButtonClear = new javax.swing.JButton();
+        jButtonPatient_Trans = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButtonRefresh = new javax.swing.JButton();
+        jTextFieldFirstNameSearch = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jTextFieldtest = new javax.swing.JTextField();
+        jTextFieldPatientID = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jTextFieldMedSpec = new javax.swing.JTextField();
+        jTextFieldSampleName = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jTextFieldTransID = new javax.swing.JTextField();
+        jButtonAddTrans = new javax.swing.JButton();
+        jButtonEditTrans = new javax.swing.JButton();
+        jButtonRemoveTrans = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTextPaneDes = new javax.swing.JTextPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextPaneTrans = new javax.swing.JTextPane();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTextPaneKey = new javax.swing.JTextPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jTextFieldTransSearch = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jTextFieldPresID = new javax.swing.JTextField();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextPaneFirstNamePres = new javax.swing.JTextPane();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTextPanePatientIDPres = new javax.swing.JTextPane();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTextPaneMedIDPres = new javax.swing.JTextPane();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        jTextPaneMedNamePres = new javax.swing.JTextPane();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        jTextPaneDosagePres = new javax.swing.JTextPane();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        jTextPaneStorePres = new javax.swing.JTextPane();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jTextFieldTransSearch1 = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("First Name");
+        jPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, 24));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Last Name");
+        jPanel4.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, -1, 24));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Phone");
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 80, -1, 24));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Email");
+        jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 80, -1, 24));
+        jPanel4.add(jTextFieldFirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 205, -1));
+        jPanel4.add(jTextFieldLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, 205, -1));
+        jPanel4.add(jTextFieldPhone, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 110, 205, -1));
+        jPanel4.add(jTextFieldEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 110, 220, -1));
 
         jButtonAdd.setText("Add");
         jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -85,6 +163,7 @@ public class PatientData extends javax.swing.JFrame {
                 jButtonAddActionPerformed(evt);
             }
         });
+        jPanel4.add(jButtonAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, 100, 40));
 
         jButtonRemove.setText("Remove");
         jButtonRemove.addActionListener(new java.awt.event.ActionListener() {
@@ -92,6 +171,7 @@ public class PatientData extends javax.swing.JFrame {
                 jButtonRemoveActionPerformed(evt);
             }
         });
+        jPanel4.add(jButtonRemove, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 110, 100, 40));
 
         jButtonEdit.setText("Edit");
         jButtonEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -99,110 +179,33 @@ public class PatientData extends javax.swing.JFrame {
                 jButtonEditActionPerformed(evt);
             }
         });
+        jPanel4.add(jButtonEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 60, 100, 40));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("ID");
+        jPanel4.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 24));
 
-        jTextFieldID.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldID.setEditable(false);
+        jPanel4.add(jTextFieldID, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 270, -1));
+
+        jButtonClear.setText("Clear");
+        jButtonClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldIDActionPerformed(evt);
+                jButtonClearActionPerformed(evt);
             }
         });
+        jPanel4.add(jButtonClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 10, 102, 40));
 
-        jButtonRefresh.setText("Refresh");
-        jButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
+        jButtonPatient_Trans.setText("Create/Edit transcription");
+        jButtonPatient_Trans.setEnabled(false);
+        jButtonPatient_Trans.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRefreshActionPerformed(evt);
+                jButtonPatient_TransActionPerformed(evt);
             }
         });
+        jPanel4.add(jButtonPatient_Trans, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 70, 160, 70));
 
-        jButton4.setText("Add/Edit this patient's transcription");
-        jButton4.setEnabled(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextFieldFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-                                    .addComponent(jTextFieldLastName)
-                                    .addComponent(jTextFieldPhone)
-                                    .addComponent(jTextFieldEmail)))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButtonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButtonRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addGap(8, 8, 8)
-                                        .addComponent(jButtonRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton4)
-                .addGap(70, 70, 70))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(181, 181, 181))
-        );
+        jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 400, 1150, 160));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -227,55 +230,112 @@ public class PatientData extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1053, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 1400, 330));
+
+        jButtonRefresh.setText("Refresh");
+        jButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRefreshActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonRefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(1290, 10, 102, 37));
+
+        jTextFieldFirstNameSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldFirstNameSearchActionPerformed(evt);
+            }
+        });
+        jTextFieldFirstNameSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldFirstNameSearchKeyTyped(evt);
+            }
+        });
+        jPanel3.add(jTextFieldFirstNameSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 12, 220, 30));
+
+        jLabel6.setText("First Name Search");
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 30));
 
         jTabbedPane1.addTab("Patient Information", jPanel3);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextFieldtest.setEditable(false);
-        jTextFieldtest.setText("jTextField1");
-        jTextFieldtest.addActionListener(new java.awt.event.ActionListener() {
+        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextFieldPatientID.setEditable(false);
+        jPanel2.add(jTextFieldPatientID, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 263, -1));
+
+        jLabel7.setText("Patient ID");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, -1, -1));
+
+        jLabel8.setText("Transcription ID");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 90, -1));
+
+        jLabel9.setText("Description");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 10, -1, -1));
+        jPanel2.add(jTextFieldMedSpec, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 240, -1));
+        jPanel2.add(jTextFieldSampleName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 240, -1));
+
+        jLabel10.setText("Medical Specialty");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
+
+        jLabel11.setText("Sample Name");
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
+
+        jLabel12.setText("Transcription");
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 10, -1, -1));
+
+        jLabel13.setText("Keywords");
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
+
+        jTextFieldTransID.setEditable(false);
+        jPanel2.add(jTextFieldTransID, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 80, -1));
+
+        jButtonAddTrans.setText("Add");
+        jButtonAddTrans.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldtestActionPerformed(evt);
+                jButtonAddTransActionPerformed(evt);
             }
         });
+        jPanel2.add(jButtonAddTrans, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 40, 80, 40));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(jTextFieldtest, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(jTextFieldtest, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jButtonEditTrans.setText("Edit");
+        jButtonEditTrans.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditTransActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButtonEditTrans, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 100, 80, 40));
+
+        jButtonRemoveTrans.setText("Remove");
+        jButtonRemoveTrans.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRemoveTransActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButtonRemoveTrans, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 170, 80, 40));
+
+        jButton5.setText("Clear");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 240, 80, 40));
+
+        jScrollPane6.setViewportView(jTextPaneDes);
+
+        jPanel2.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 30, 420, 260));
+
+        jScrollPane3.setViewportView(jTextPaneTrans);
+
+        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 30, 430, 260));
+
+        jScrollPane7.setViewportView(jTextPaneKey);
+
+        jPanel2.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 380, 80));
+
+        jPanel5.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 1400, 300));
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -293,65 +353,154 @@ public class PatientData extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1047, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        jPanel5.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 1400, 200));
+
+        jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1320, 10, 90, 30));
+
+        jTextFieldTransSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldTransSearchKeyTyped(evt);
+            }
+        });
+        jPanel5.add(jTextFieldTransSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 12, 280, 30));
+
+        jLabel21.setText("Patient ID search");
+        jPanel5.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 20));
 
         jTabbedPane1.addTab("Transcriptions", jPanel5);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(93, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Prescription ID", "Patient ID", "First Name", "Medicine Name", "Dosage", "Storage Condition", "Medicine ID"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable3MouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(jTable3);
+
+        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 1400, 160));
+
+        jButton2.setText("Refresh");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1310, 10, 100, 30));
+
+        jButton3.setText("Delete this Prescription");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 530, 160, 30));
+        jPanel6.add(jTextFieldPresID, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 130, 30));
+
+        jScrollPane5.setViewportView(jTextPaneFirstNamePres);
+
+        jPanel6.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 150, -1));
+
+        jScrollPane8.setViewportView(jTextPanePatientIDPres);
+
+        jPanel6.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 280, -1));
+
+        jScrollPane9.setViewportView(jTextPaneMedIDPres);
+
+        jPanel6.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 100, -1));
+
+        jScrollPane10.setViewportView(jTextPaneMedNamePres);
+
+        jPanel6.add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 460, 260, -1));
+
+        jScrollPane11.setViewportView(jTextPaneDosagePres);
+
+        jPanel6.add(jScrollPane11, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 240, 510, 320));
+
+        jScrollPane12.setViewportView(jTextPaneStorePres);
+
+        jPanel6.add(jScrollPane12, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 240, 400, 320));
+
+        jLabel14.setText("Prescription ID");
+        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
+
+        jLabel15.setText("Patient ID");
+        jPanel6.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, -1, -1));
+
+        jLabel16.setText("First Name");
+        jPanel6.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, -1, -1));
+
+        jLabel17.setText("Medicine Name");
+        jPanel6.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, -1, -1));
+
+        jLabel18.setText("Medicine ID");
+        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, -1, -1));
+
+        jLabel19.setText("Dosage");
+        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 220, -1, -1));
+
+        jLabel20.setText("Storage Condition");
+        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 220, -1, -1));
+
+        jTextFieldTransSearch1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldTransSearch1KeyTyped(evt);
+            }
+        });
+        jPanel6.add(jTextFieldTransSearch1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 12, 280, 30));
+
+        jLabel22.setText("Patient ID search");
+        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 20));
+
+        jTabbedPane1.addTab("Prescriptions", jPanel6);
+
+        jPanel1.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 1420, 600));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1444, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
-        //add patient
-        
+        //ADD PATIENT INFORMATION
         String fname = jTextFieldFirstName.getText();
         String lname = jTextFieldLastName.getText();
         String phone = jTextFieldPhone.getText();
@@ -369,8 +518,8 @@ public class PatientData extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        //get patient information when clicked on table
-        
+        //GET PATIENT INFORMATION WHEN CLICKED ON TABLE
+
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int rIndex = jTable1.getSelectedRow();
         jTextFieldID.setText(model.getValueAt(rIndex, 0).toString());
@@ -378,11 +527,11 @@ public class PatientData extends javax.swing.JFrame {
         jTextFieldLastName.setText(model.getValueAt(rIndex, 2).toString());
         jTextFieldPhone.setText(model.getValueAt(rIndex, 3).toString());
         jTextFieldEmail.setText(model.getValueAt(rIndex, 4).toString());
-        jButton4.setEnabled(true);
+        jButtonPatient_Trans.setEnabled(true);
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditActionPerformed
-        //edit selected patient information
+        //EDIT PATIENT INFORMATION
 
         String id = jTextFieldID.getText();
         String fname = jTextFieldFirstName.getText();
@@ -394,7 +543,6 @@ public class PatientData extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Please enter required fields (First Name, Last Name, Phone)", "Empty", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
-                id = jTextFieldID.getText();
                 if (patientInfo.editPatient(id, fname, lname, phone, email)) {
                     JOptionPane.showMessageDialog(rootPane, "Patient Information was edited", "Edit Patient", JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -409,43 +557,234 @@ public class PatientData extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonEditActionPerformed
 
     private void jButtonRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveActionPerformed
-        //remove patient information
+        //REMOVE PATIENT INFORMATION
+
+        String id = jTextFieldID.getText();
         try {
-                String id =jTextFieldID.getText();
-                if (patientInfo.removePatient(id)) {
-                    JOptionPane.showMessageDialog(rootPane, "Patient Information was deleted", "Delete Patient", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Patient was not deleted", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + "Enter the Patient ID ", "Patient ID Error", JOptionPane.WARNING_MESSAGE);
+            if (patientInfo.removePatient(id)) {
+                JOptionPane.showMessageDialog(rootPane, "Patient Information was deleted", "Delete Patient", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Patient was not deleted, please delete their transciption/treatment plan first", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + "Enter the Patient ID ", "Patient ID Error", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButtonRemoveActionPerformed
 
     private void jButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshActionPerformed
-        //refresh button
+        //REFRESH PATIENT INFORMATION TABLE
+
         jTable1.setModel(new DefaultTableModel(null, new Object[]{"ID", "First Name", "Last Name", "Phone", "Email"}));
         patientInfo.fillPatientTable(jTable1);
-        
+
     }//GEN-LAST:event_jButtonRefreshActionPerformed
 
-    private void jTextFieldIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldIDActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButtonPatient_TransActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPatient_TransActionPerformed
+        //SELECT PATIENT ID TO TRANSCRIPTION TABLE
 
         jTabbedPane1.setSelectedIndex(1);
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int rIndex = jTable1.getSelectedRow();
-        jTextFieldtest.setText(model.getValueAt(rIndex, 0).toString());
-        
-    }//GEN-LAST:event_jButton4ActionPerformed
+        jTextFieldPatientID.setText(model.getValueAt(rIndex, 0).toString());
 
-    private void jTextFieldtestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldtestActionPerformed
+    }//GEN-LAST:event_jButtonPatient_TransActionPerformed
+
+    private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
+        //CLEAR PATIENT INFORMATION TEXT AREA
+
+        jTextFieldID.setText("");
+        jTextFieldFirstName.setText("");
+        jTextFieldLastName.setText("");
+        jTextFieldPhone.setText("");
+        jTextFieldEmail.setText("");
+
+    }//GEN-LAST:event_jButtonClearActionPerformed
+
+    private void jTextFieldFirstNameSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldFirstNameSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldtestActionPerformed
+    }//GEN-LAST:event_jTextFieldFirstNameSearchActionPerformed
+
+    private void jTextFieldFirstNameSearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldFirstNameSearchKeyTyped
+        //SEARCH PATIENT INFORMATION
+
+        String fname = jTextFieldFirstNameSearch.getText();
+        String query = "SELECT * FROM `patientinfo` WHERE INSTR (first_name, '" + fname + "')>0";
+
+        try {
+            ps = connection.createConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (SQLException ex) {
+            Logger.getLogger(PatientData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jTextFieldFirstNameSearchKeyTyped
+
+    private void jButtonAddTransActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddTransActionPerformed
+        //ADD TRANSCRIPTION
+
+        String patientid = jTextFieldPatientID.getText();
+        String des = jTextPaneDes.getText();
+        String medspec = jTextFieldMedSpec.getText();
+        String sname = jTextFieldSampleName.getText();
+        String trans = jTextPaneTrans.getText();
+        String key = jTextPaneKey.getText();
+
+        if (patientid.trim().equals("") || des.trim().equals("") || medspec.trim().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter required fields (Patient ID, Description, Medical Specialty)", "Empty", JOptionPane.WARNING_MESSAGE);
+        } else {
+            if (patientTrans.addTrans(patientid, des, medspec, sname, trans, key)) {
+                JOptionPane.showMessageDialog(rootPane, "New Transcription was added", "Add Transcription", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Transcription for this patient already existed", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+
+    }//GEN-LAST:event_jButtonAddTransActionPerformed
+
+    private void jButtonEditTransActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditTransActionPerformed
+        //EDIT TRANSCRIPTION
+
+        int trans_id = Integer.valueOf(jTextFieldTransID.getText());
+        String patientid = jTextFieldPatientID.getText();
+        String des = jTextPaneDes.getText();
+        String medspec = jTextFieldMedSpec.getText();
+        String sname = jTextFieldSampleName.getText();
+        String trans = jTextPaneTrans.getText();
+        String key = jTextPaneKey.getText();
+
+        if (patientid.trim().equals("") || des.trim().equals("") || medspec.trim().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter required fields (Patient ID, Description, Medical Specialty)", "Empty", JOptionPane.WARNING_MESSAGE);
+        } else {
+            if (patientTrans.addTrans(patientid, des, medspec, sname, trans, key)) {
+                JOptionPane.showMessageDialog(rootPane, "Transcription was edited", "Edit Transcription", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Transcription was not updated", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+    }//GEN-LAST:event_jButtonEditTransActionPerformed
+
+    private void jButtonRemoveTransActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRemoveTransActionPerformed
+        //REMOVE TRANSCRIPTION
+
+        int transid = Integer.valueOf(jTextFieldTransID.getText());
+        try {
+            if (patientTrans.removeTrans(transid)) {
+                JOptionPane.showMessageDialog(rootPane, "Patient Transcription was deleted", "Delete Transcription", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Transcription was not deleted", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + "Enter the Patient ID ", "Patient ID Error", JOptionPane.WARNING_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_jButtonRemoveTransActionPerformed
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // GET TRANSCRIPTION INFORMATION WHEN CLICKED
+
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        int rIndex = jTable2.getSelectedRow();
+        jTextFieldTransID.setText(model.getValueAt(rIndex, 0).toString());
+        jTextFieldPatientID.setText(model.getValueAt(rIndex, 1).toString());
+        jTextPaneDes.setText(model.getValueAt(rIndex, 2).toString());
+        jTextFieldMedSpec.setText(model.getValueAt(rIndex, 3).toString());
+        jTextFieldSampleName.setText(model.getValueAt(rIndex, 4).toString());
+        jTextPaneTrans.setText(model.getValueAt(rIndex, 5).toString());
+        jTextPaneKey.setText(model.getValueAt(rIndex, 6).toString());
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        //CLEAR TEXT IN TRANSCRIPTION
+
+        jTextFieldTransID.setText("");
+        jTextFieldPatientID.setText("");
+        jTextPaneDes.setText("");
+        jTextFieldMedSpec.setText("");
+        jTextFieldSampleName.setText("");
+        jTextPaneTrans.setText("");
+        jTextPaneKey.setText("");
+
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //REFRESH PATIENT TRANSCRIPTION
+        jTable2.setModel(new DefaultTableModel(null, new Object[]{"Transcription ID", "Patient ID", "Description", "Medical Specialty", "Sample Name", "Transcription", "Keywords"}));
+        patientTrans.fillTransTable(jTable2);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        //DELETE PRESCRIPTION
+
+        int presid = Integer.valueOf(jTextFieldPresID.getText());
+        try {
+            if (patientPres.removePres(presid)) {
+                JOptionPane.showMessageDialog(rootPane, "Patient Prescription was deleted", "Delete Prescription", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Prescription was not deleted", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + "Enter the Patient ID ", "Patient ID Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        //GET PRESCRIPTION DETAILS WHEN MOUSE CLICKED
+
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        int rIndex = jTable3.getSelectedRow();
+        jTextFieldPresID.setText(model.getValueAt(rIndex, 0).toString());
+        jTextPanePatientIDPres.setText(model.getValueAt(rIndex, 1).toString());
+        jTextPaneFirstNamePres.setText(model.getValueAt(rIndex, 2).toString());
+        jTextPaneMedNamePres.setText(model.getValueAt(rIndex, 3).toString());
+        jTextPaneDosagePres.setText(model.getValueAt(rIndex, 4).toString());
+        jTextPaneStorePres.setText(model.getValueAt(rIndex, 5).toString());
+        jTextPaneMedIDPres.setText(model.getValueAt(rIndex, 6).toString());
+
+
+    }//GEN-LAST:event_jTable3MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //REFRESH PRESCRIPTION
+
+        jTable3.setModel(new DefaultTableModel(null, new Object[]{"Prescription ID", "Patient ID", "Patient Name", "Medicine Name", "Dosage", "Storage Condition", "Medicine ID"}));
+        patientPres.fillPresTable(jTable3);
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextFieldTransSearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldTransSearchKeyTyped
+        //TRANSCRIPTION SEARCH
+        
+        String patientID = jTextFieldTransSearch.getText();
+        String query = "SELECT * FROM `transcriptions` WHERE INSTR (patient_id, '" + patientID + "')>0";
+
+        try {
+            ps = connection.createConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            jTable2.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (SQLException ex) {
+            Logger.getLogger(PatientData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTextFieldTransSearchKeyTyped
+
+    private void jTextFieldTransSearch1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldTransSearch1KeyTyped
+        //PRESCRIPTION SEARCH
+        
+        String patientID = jTextFieldTransSearch1.getText();
+        String query = "SELECT * FROM `prescriptions` WHERE INSTR (patient_id, '" + patientID + "')>0";
+
+        try {
+            ps = connection.createConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            jTable3.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (SQLException ex) {
+            Logger.getLogger(PatientData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTextFieldTransSearch1KeyTyped
 
     /**
      * @param args the command line arguments
@@ -483,31 +822,84 @@ public class PatientData extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButtonAdd;
+    private javax.swing.JButton jButtonAddTrans;
+    private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonEdit;
+    private javax.swing.JButton jButtonEditTrans;
+    private javax.swing.JButton jButtonPatient_Trans;
     private javax.swing.JButton jButtonRefresh;
     private javax.swing.JButton jButtonRemove;
+    private javax.swing.JButton jButtonRemoveTrans;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextFieldEmail;
     private javax.swing.JTextField jTextFieldFirstName;
-    private javax.swing.JTextField jTextFieldID;
+    private javax.swing.JTextField jTextFieldFirstNameSearch;
+    public javax.swing.JTextField jTextFieldID;
     private javax.swing.JTextField jTextFieldLastName;
+    private javax.swing.JTextField jTextFieldMedSpec;
+    private javax.swing.JTextField jTextFieldPatientID;
     private javax.swing.JTextField jTextFieldPhone;
-    private javax.swing.JTextField jTextFieldtest;
+    private javax.swing.JTextField jTextFieldPresID;
+    private javax.swing.JTextField jTextFieldSampleName;
+    private javax.swing.JTextField jTextFieldTransID;
+    private javax.swing.JTextField jTextFieldTransSearch;
+    private javax.swing.JTextField jTextFieldTransSearch1;
+    private javax.swing.JTextPane jTextPaneDes;
+    private javax.swing.JTextPane jTextPaneDosagePres;
+    private javax.swing.JTextPane jTextPaneFirstNamePres;
+    private javax.swing.JTextPane jTextPaneKey;
+    private javax.swing.JTextPane jTextPaneMedIDPres;
+    private javax.swing.JTextPane jTextPaneMedNamePres;
+    private javax.swing.JTextPane jTextPanePatientIDPres;
+    private javax.swing.JTextPane jTextPaneStorePres;
+    private javax.swing.JTextPane jTextPaneTrans;
     // End of variables declaration//GEN-END:variables
 }
