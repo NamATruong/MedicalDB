@@ -1,18 +1,14 @@
--- Create database
 CREATE DATABASE IF NOT EXISTS medical_db;
 USE medical_db;
 
--- Users table
 CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) PRIMARY KEY,
     password VARCHAR(100) NOT NULL
 );
 
--- Insert default admin user
 INSERT INTO users (username, password) VALUES ('admin', 'password')
 ON DUPLICATE KEY UPDATE password = 'password';
 
--- Patients table
 CREATE TABLE IF NOT EXISTS patients (
     id VARCHAR(36) PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
@@ -21,7 +17,6 @@ CREATE TABLE IF NOT EXISTS patients (
     email VARCHAR(100)
 );
 
--- Medicines table
 CREATE TABLE IF NOT EXISTS medicines (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -39,7 +34,6 @@ CREATE TABLE IF NOT EXISTS medicines (
     link VARCHAR(255)
 );
 
--- Transcriptions table
 CREATE TABLE IF NOT EXISTS transcriptions (
     trans_id INT PRIMARY KEY AUTO_INCREMENT,
     patient_id VARCHAR(36) NOT NULL,
@@ -51,7 +45,6 @@ CREATE TABLE IF NOT EXISTS transcriptions (
     FOREIGN KEY (patient_id) REFERENCES patients(id)
 );
 
--- Prescriptions table
 CREATE TABLE IF NOT EXISTS prescriptions (
     pres_id INT PRIMARY KEY AUTO_INCREMENT,
     patient_id VARCHAR(36) NOT NULL,
@@ -64,7 +57,6 @@ CREATE TABLE IF NOT EXISTS prescriptions (
     FOREIGN KEY (medicine_id) REFERENCES medicines(id)
 );
 
--- Insert sample data
 INSERT INTO patients (id, first_name, last_name, phone, email)
 VALUES 
     (UUID(), 'John', 'Doe', '555-1234', 'john@example.com'),
